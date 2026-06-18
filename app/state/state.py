@@ -11,5 +11,10 @@ class AgentState(TypedDict):
     financial_report: str
 
     news_report: str
+    
+    bull_case: str
+
+    bear_case: str
 
     final_recommendation: str
+    
