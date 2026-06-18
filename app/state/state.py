@@ -1,6 +1,3 @@
-from typing import TypedDict
-
-
 class AgentState(TypedDict):
 
     ticker: str
@@ -10,5 +7,7 @@ class AgentState(TypedDict):
     research_report: str
 
     financial_report: str
+
+    news_report: str
 
     final_recommendation: str
