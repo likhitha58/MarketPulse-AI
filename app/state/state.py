@@ -15,6 +15,9 @@ class AgentState(TypedDict):
     bull_case: str
 
     bear_case: str
+    
+    risk_report: str
 
     final_recommendation: str
+
     
