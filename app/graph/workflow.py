@@ -3,7 +3,7 @@ from state.state import AgentState
 from agents.research_agent import research_agent
 from agents.financial_agent import financial_agent
 from agents.decision_agent import decision_agent
-
+from agents.news_agent import news_agent
 #node 1
 def research_node(state):
 
@@ -27,6 +27,17 @@ def financial_node(state):
     return state
 
 #node 3
+def news_node(state):
+
+    ticker = state["ticker"]
+
+    report = news_agent(ticker)
+
+    state["news_report"] = report
+
+    return state
+
+#node 4
 def decision_node(state):
 
     return decision_agent(state)
@@ -50,6 +61,11 @@ graph_builder.add_node(
     decision_node
 )
 
+graph_builder.add_node(
+    "news",
+    news_node
+)
+
 #adding edges
 graph_builder.add_edge(
     START,
@@ -63,6 +79,11 @@ graph_builder.add_edge(
 
 graph_builder.add_edge(
     "financial",
+    "news"
+)
+
+graph_builder.add_edge(
+    "news",
     "decision"
 )
 

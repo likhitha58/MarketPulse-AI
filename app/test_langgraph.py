@@ -5,7 +5,8 @@ initial_state = {
     "company_name": "NVIDIA",
     "research_report": "",
     "financial_report": "",
-    "final_recommendation": ""
+    "final_recommendation": "",
+    "news_report": ""
 }
 
 result = graph.invoke(initial_state)
