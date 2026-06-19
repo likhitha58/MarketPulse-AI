@@ -4,33 +4,32 @@ from app.config.gemini import client
 def committee_agent(state):
 
     prompt = f"""
-You are the Head of an Investment Committee.
+You are Head of the Investment Committee.
 
-You have received:
+Bull Case:
+{state["bull_case"]}
 
-BULL CASE:
-{state['bull_case']}
-
-BEAR CASE:
-{state['bear_case']}
+Bear Case:
+{state["bear_case"]}
 
 Risk Assessment:
 {state["risk_report"]}
-Evaluate the bull case, bear case, and risk assessment objectively.
 
 Provide:
 
-1. Strongest Bull Arguments
-2. Strongest Bear Arguments
-3. Final Recommendation
+Recommendation: BUY/HOLD/SELL
 
-Recommendation must be:
+Confidence Score: XX%
 
-BUY
-HOLD
-SELL
+Summary:
+Maximum 3 sentences.
 
-Explain your reasoning.
+Why:
+- Point 1
+- Point 2
+- Point 3
+
+Keep total response under 150 words.
 """
 
     response = client.models.generate_content(

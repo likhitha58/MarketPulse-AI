@@ -4,27 +4,27 @@ from app.config.gemini import client
 def bear_agent(state):
 
     prompt = f"""
-You are a highly skeptical Wall Street Bear Analyst.
+You are a bearish equity analyst.
 
-Your job is to build the strongest possible argument AGAINST investing.
+Based on:
 
 Research Report:
-{state['research_report']}
+{state["research_report"]}
 
 Financial Report:
-{state['financial_report']}
+{state["financial_report"]}
 
 News Report:
-{state['news_report']}
+{state["news_report"]}
 
-Create:
+Create the strongest bear case.
 
-1. Investment Risks
-2. Competitive Threats
-3. Financial Concerns
-4. Reasons This Stock Can Underperform
-
-Be persuasive and bearish.
+Rules:
+- Maximum 5 bullet points
+- Each bullet under 20 words
+- No introduction
+- No conclusion
+- Be concise
 """
 
     response = client.models.generate_content(

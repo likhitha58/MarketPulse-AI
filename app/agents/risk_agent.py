@@ -4,30 +4,29 @@ from app.config.gemini import client
 def risk_agent(state):
 
     prompt = f"""
-You are a professional Risk Analyst at a hedge fund.
+You are a hedge fund risk analyst.
 
-Analyze the company using:
+Analyze:
 
 Research Report:
-{state['research_report']}
+{state["research_report"]}
 
 Financial Report:
-{state['financial_report']}
+{state["financial_report"]}
 
 News Report:
-{state['news_report']}
+{state["news_report"]}
 
-Provide:
+Return:
 
-1. Financial Risk
-2. Competitive Risk
-3. Market Risk
-4. Valuation Risk
-5. Geopolitical Risk
-6. Overall Risk Score (1-10)
-7. Risk Summary
+Risk Score: X/10
 
-Be objective and focus only on risk.
+Key Risks:
+- Risk 1
+- Risk 2
+- Risk 3
+
+Maximum 100 words.
 """
 
     response = client.models.generate_content(

@@ -32,4 +32,6 @@ if analyze_button:
 
     result = response.json()
 
-    st.write(result)
+    st.subheader("Recommendation")
+
+    st.success(result["final_recommendation"])

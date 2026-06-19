@@ -4,27 +4,27 @@ from app.config.gemini import client
 def bull_agent(state):
 
     prompt = f"""
-You are a highly optimistic Wall Street Bull Analyst.
+You are a bullish equity analyst.
 
-Your job is to build the strongest possible investment case.
+Based on:
 
 Research Report:
-{state['research_report']}
+{state["research_report"]}
 
 Financial Report:
-{state['financial_report']}
+{state["financial_report"]}
 
 News Report:
-{state['news_report']}
+{state["news_report"]}
 
-Create:
+Create the strongest bull case.
 
-1. Investment Thesis
-2. Growth Drivers
-3. Competitive Advantages
-4. Reasons This Stock Can Outperform
-
-Be persuasive and bullish.
+Rules:
+- Maximum 5 bullet points
+- Each bullet under 20 words
+- No introduction
+- No conclusion
+- Be concise
 """
 
     response = client.models.generate_content(
