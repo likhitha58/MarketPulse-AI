@@ -1,5 +1,5 @@
-from tools.news_tool import get_company_news
-from config.gemini import client
+from app.tools.news_tool import get_company_news
+from app.config.gemini import client
 
 
 def news_agent(ticker):

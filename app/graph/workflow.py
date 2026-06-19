@@ -1,12 +1,12 @@
 from langgraph.graph import StateGraph, START, END
-from state.state import AgentState
-from agents.research_agent import research_agent
-from agents.financial_agent import financial_agent
-from agents.news_agent import news_agent
-from agents.bull_agent import bull_agent
-from agents.bear_agent import bear_agent
-from agents.committee_agent import committee_agent
-from agents.risk_agent import risk_agent
+from app.state.state import AgentState
+from app.agents.research_agent import research_agent
+from app.agents.financial_agent import financial_agent
+from app.agents.news_agent import news_agent
+from app.agents.bull_agent import bull_agent
+from app.agents.bear_agent import bear_agent
+from app.agents.committee_agent import committee_agent
+from app.agents.risk_agent import risk_agent
 
 #node 1
 def research_node(state):

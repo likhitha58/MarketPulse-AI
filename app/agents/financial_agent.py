@@ -1,5 +1,5 @@
-from tools.financial_tool import get_financial_data
-from config.gemini import client
+from app.tools.financial_tool import get_financial_data
+from app.config.gemini import client
 
 
 def financial_agent(ticker):

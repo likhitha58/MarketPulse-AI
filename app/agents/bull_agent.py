@@ -1,4 +1,4 @@
-from config.gemini import client
+from app.config.gemini import client
 
 
 def bull_agent(state):

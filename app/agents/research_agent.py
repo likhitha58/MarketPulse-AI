@@ -1,5 +1,5 @@
-from tools.yfinance_tool import get_company_info
-from config.gemini import client
+from app.tools.yfinance_tool import get_company_info
+from app.config.gemini import client
 
 
 def research_agent(ticker):

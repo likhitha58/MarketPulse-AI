@@ -1,5 +1,10 @@
-from agents.research_agent import research_agent
+from fastapi import FastAPI
+from app.api.routes import router
 
-report = research_agent("NVDA")
+app = FastAPI(
+    title="MarketPulse AI API",
+    description="Multi-Agent Equity Research Platform powered by LangGraph and Gemini",
+    version="1.0.0"
+)
 
-print(report)
+app.include_router(router)
