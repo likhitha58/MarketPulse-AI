@@ -6,6 +6,7 @@ from agents.news_agent import news_agent
 from agents.bull_agent import bull_agent
 from agents.bear_agent import bear_agent
 from agents.committee_agent import committee_agent
+from agents.risk_agent import risk_agent
 
 #node 1
 def research_node(state):
@@ -65,6 +66,15 @@ def committee_node(state):
 
     return committee_agent(state)
 
+#node 8
+def risk_node(state):
+
+    result = risk_agent(state)
+
+    return {
+        "risk_report": result["risk_report"]
+    }
+
 #creating graph builder
 graph_builder = StateGraph(AgentState)
 
@@ -98,6 +108,12 @@ graph_builder.add_node(
     "committee",
     committee_node
 )
+
+graph_builder.add_node(
+    "risk",
+    risk_node
+)
+
 #adding edges
 graph_builder.add_edge(
     START,
@@ -125,12 +141,22 @@ graph_builder.add_edge(
 )
 
 graph_builder.add_edge(
+    "news",
+    "risk"
+)
+
+graph_builder.add_edge(
     "bull",
     "committee"
 )
 
 graph_builder.add_edge(
     "bear",
+    "committee"
+)
+
+graph_builder.add_edge(
+    "risk",
     "committee"
 )
 

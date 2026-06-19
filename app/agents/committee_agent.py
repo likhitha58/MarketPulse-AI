@@ -14,7 +14,9 @@ BULL CASE:
 BEAR CASE:
 {state['bear_case']}
 
-Evaluate both arguments objectively.
+Risk Assessment:
+{state["risk_report"]}
+Evaluate the bull case, bear case, and risk assessment objectively.
 
 Provide:
 

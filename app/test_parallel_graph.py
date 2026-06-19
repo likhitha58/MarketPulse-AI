@@ -15,6 +15,8 @@ initial_state = {
     "bull_case": "",
 
     "bear_case": "",
+    
+    "risk_report": "",
 
     "final_recommendation": ""
 }
