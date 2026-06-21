@@ -1,5 +1,6 @@
 from app.tools.news_tool import get_company_news
-from app.config.gemini import client
+from app.config.groq_client import client
+from app.utils.llm_helper import safe_generate
 
 
 def news_agent(ticker):
@@ -32,9 +33,7 @@ OUTLOOK:
 2-3 sentence summary.
 """
 
-    response = client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=prompt
+    return safe_generate(
+    client,
+    prompt
     )
-
-    return response.text

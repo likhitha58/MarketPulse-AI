@@ -1,4 +1,5 @@
-from app.config.gemini import client
+from app.config.groq_client import client
+from app.utils.llm_helper import safe_generate
 
 
 def risk_agent(state):
@@ -29,11 +30,9 @@ Key Risks:
 Maximum 100 words.
 """
 
-    response = client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=prompt
+    state["risk_report"] = safe_generate(
+        client,
+        prompt
     )
-
-    state["risk_report"] = response.text
 
     return state

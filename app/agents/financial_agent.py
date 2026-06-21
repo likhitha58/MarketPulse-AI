@@ -1,5 +1,6 @@
 from app.tools.financial_tool import get_financial_data
-from app.config.gemini import client
+from app.config.groq_client import client
+from app.utils.llm_helper import safe_generate
 
 
 def financial_agent(ticker):
@@ -32,9 +33,7 @@ def financial_agent(ticker):
     Explain in simple but professional language.
     """
 
-    response = client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=prompt
+    return safe_generate(
+    client,
+    prompt
     )
-
-    return response.text

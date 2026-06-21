@@ -48,7 +48,7 @@ analyze_button = st.button(
 )
 
 # --------------------------------------------------
-# Analysis Section
+# Run Analysis
 # --------------------------------------------------
 
 if analyze_button:
@@ -63,28 +63,40 @@ if analyze_button:
     ) as status:
 
         st.write("🧠 Research Agent analyzing company...")
-        st.write("📊 Financial Agent reviewing statements...")
-        st.write("📰 News Agent scanning market news...")
-        st.write("🐂 Bull Agent building bullish thesis...")
-        st.write("🐻 Bear Agent building bearish thesis...")
+        st.write("📊 Financial Agent reviewing financials...")
+        st.write("📰 News Agent scanning headlines...")
+        st.write("🐂 Bull Agent building investment thesis...")
+        st.write("🐻 Bear Agent building counter-thesis...")
         st.write("⚠️ Risk Agent assessing risks...")
-        st.write("🏛️ Investment Committee making final decision...")
+        st.write("🏛️ Committee Agent making final decision...")
 
-        response = requests.post(
-            "http://127.0.0.1:8000/analyze",
-            json={
-                "ticker": ticker.upper()
-            }
-        )
+        try:
 
-        if response.status_code != 200:
-            st.error(
-                f"Backend Error: {response.status_code}"
+            response = requests.post(
+                "http://127.0.0.1:8000/analyze",
+                json={
+                    "ticker": ticker.upper()
+                },
+                timeout=300
             )
-            st.stop()
 
-        result = response.json()
-        st.write(result)
+            if response.status_code != 200:
+
+                st.error(
+                    f"Backend Error: {response.status_code}"
+                )
+
+                st.stop()
+
+            result = response.json()
+
+        except Exception as e:
+
+            st.error(
+                f"Request Failed: {e}"
+            )
+
+            st.stop()
 
         status.update(
             label="✅ Analysis Complete",
@@ -103,67 +115,113 @@ if analyze_button:
 
     with col1:
         st.metric(
-            label="Stock",
-            value=ticker.upper()
+            "Ticker",
+            ticker.upper()
         )
 
     with col2:
         st.metric(
-            label="Agents",
-            value="7"
+            "Agents",
+            "7"
         )
 
     with col3:
         st.metric(
-            label="Status",
-            value="Completed"
+            "Status",
+            "Completed"
         )
 
     st.divider()
 
     # --------------------------------------------------
-    # Final Recommendation
+    # Recommendation Card
     # --------------------------------------------------
 
-    st.subheader("🏛️ Final Recommendation")
-
-    st.success(
-        result["recommendation"]
+    recommendation_text = result.get(
+        "recommendation",
+        result.get(
+            "final_recommendation",
+            "No recommendation available."
+        )
     )
+
+    st.subheader("🏛️ Investment Committee Decision")
+
+    left, right = st.columns([1, 3])
+
+    with left:
+
+        recommendation_upper = recommendation_text.upper()
+
+        if "BUY" in recommendation_upper:
+            st.success("BUY")
+
+        elif "SELL" in recommendation_upper:
+            st.error("SELL")
+
+        else:
+            st.warning("HOLD")
+
+    with right:
+        st.info(recommendation_text)
 
     # --------------------------------------------------
     # Agent Reports
     # --------------------------------------------------
 
-    with st.expander("🧠 Research Report"):
-        st.write(
-            result["research_report"]
-        )
+    if "research_report" in result:
 
-    with st.expander("📊 Financial Report"):
-        st.write(
-            result["financial_report"]
-        )
+        with st.expander(
+            "🧠 Research Report"
+        ):
+            st.write(
+                result["research_report"]
+            )
 
-    with st.expander("📰 News Report"):
-        st.write(
-            result["news_report"]
-        )
+    if "financial_report" in result:
 
-    with st.expander("🐂 Bull Case"):
-        st.write(
-            result["bull_case"]
-        )
+        with st.expander(
+            "📊 Financial Report"
+        ):
+            st.write(
+                result["financial_report"]
+            )
 
-    with st.expander("🐻 Bear Case"):
-        st.write(
-            result["bear_case"]
-        )
+    if "news_report" in result:
 
-    with st.expander("⚠️ Risk Assessment"):
-        st.write(
-            result["risk_report"]
-        )
+        with st.expander(
+            "📰 News Report"
+        ):
+            st.write(
+                result["news_report"]
+            )
+
+    if "bull_case" in result:
+
+        with st.expander(
+            "🐂 Bull Case"
+        ):
+            st.write(
+                result["bull_case"]
+            )
+
+    if "bear_case" in result:
+
+        with st.expander(
+            "🐻 Bear Case"
+        ):
+            st.write(
+                result["bear_case"]
+            )
+
+    if "risk_report" in result:
+
+        with st.expander(
+            "⚠️ Risk Assessment"
+        ):
+            st.write(
+                result["risk_report"]
+            )
 
     # --------------------------------------------------
     # Timeline
@@ -171,7 +229,9 @@ if analyze_button:
 
     st.divider()
 
-    st.subheader("🕒 Agent Activity Timeline")
+    st.subheader(
+        "🕒 Agent Activity Timeline"
+    )
 
     st.markdown("""
 ✅ Research Agent Complete

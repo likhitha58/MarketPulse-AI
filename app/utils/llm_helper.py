@@ -1,21 +1,35 @@
 import time
 
+PRIMARY_MODEL = "llama-3.3-70b-versatile"
+FALLBACK_MODEL = "llama-3.1-8b-instant"
+
+
 def safe_generate(client, prompt):
 
-    for attempt in range(3):
+    for model in [PRIMARY_MODEL, FALLBACK_MODEL]:
 
-        try:
-            response = client.models.generate_content(
-                model="gemini-2.5-flash",
-                contents=prompt
-            )
+        for attempt in range(3):
 
-            return response.text
+            try:
 
-        except Exception as e:
+                response = client.chat.completions.create(
+                    model=model,
+                    messages=[
+                        {
+                            "role": "user",
+                            "content": prompt
+                        }
+                    ]
+                )
 
-            print(f"Attempt {attempt+1} failed")
+                return response.choices[0].message.content
 
-            time.sleep(5)
+            except Exception as e:
+
+                print(
+                    f"{model} attempt {attempt + 1} failed: {e}"
+                )
+
+                time.sleep(2)
 
     return "LLM temporarily unavailable."

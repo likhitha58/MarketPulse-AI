@@ -1,4 +1,5 @@
-from app.config.gemini import client
+from app.config.groq_client import client
+from app.utils.llm_helper import safe_generate
 
 
 def committee_agent(state):
@@ -32,11 +33,9 @@ Why:
 Keep total response under 150 words.
 """
 
-    response = client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=prompt
+    state["final_recommendation"] = safe_generate(
+        client,
+        prompt
     )
-
-    state["final_recommendation"] = response.text
 
     return state

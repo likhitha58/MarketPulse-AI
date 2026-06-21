@@ -1,4 +1,5 @@
-from app.config.gemini import client
+from app.config.groq_client import client
+from app.utils.llm_helper import safe_generate
 
 
 def bull_agent(state):
@@ -27,11 +28,9 @@ Rules:
 - Be concise
 """
 
-    response = client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=prompt
+    state["bull_case"] = safe_generate(
+        client,
+        prompt
     )
-
-    state["bull_case"] = response.text
 
     return state

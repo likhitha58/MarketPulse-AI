@@ -1,6 +1,6 @@
 from app.tools.yfinance_tool import get_company_info
-from app.config.gemini import client
-
+from app.config.groq_client import client
+from app.utils.llm_helper import safe_generate
 
 def research_agent(ticker):
 
@@ -9,7 +9,7 @@ def research_agent(ticker):
     prompt = f"""
     You are a professional equity research analyst.
 
-    Analyze the following company:
+    Analyze:
 
     Company Name: {company_data['name']}
     Sector: {company_data['sector']}
@@ -18,21 +18,11 @@ def research_agent(ticker):
 
     Business Summary:
     {company_data['summary']}
-
-    Create a research report with:
-
-    1. Company Overview
-    2. Industry Position
-    3. Key Strengths
-    4. Potential Concerns
-    5. Competitor Discussion
-
-    Keep the report professional.
     """
 
-    response = client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=prompt
+    report = safe_generate(
+    client,
+    prompt
     )
 
-    return response.text
+    return report
