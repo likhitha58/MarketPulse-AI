@@ -98,7 +98,7 @@ if analyze_button:
         try:
 
             response = requests.post(
-                "http://127.0.0.1:8000/analyze",
+                "https://marketpulse-ai-production-bdf0.up.railway.app/analyze",
                 json={
                     "ticker": ticker.upper()
                 },
