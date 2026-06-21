@@ -2,8 +2,12 @@ from pydantic import BaseModel
 from fastapi import APIRouter
 
 from app.graph.workflow import graph
-from app.tools.yfinance_tool import get_stock_metrics
-
+from app.tools.chart_tool import get_stock_history
+from app.tools.yfinance_tool import (
+    get_stock_metrics,
+    get_company_info
+)
+from app.tools.search_tool import resolve_ticker
 
 class AnalyzeRequest(BaseModel):
     ticker: str
@@ -22,10 +26,12 @@ def home():
 
 @router.post("/analyze")
 def analyze_stock(request: AnalyzeRequest):
-
+    ticker = resolve_ticker(
+        request.ticker
+    )
     initial_state = {
 
-        "ticker": request.ticker,
+        "ticker": ticker,
 
         "company_name": "",
 
@@ -48,34 +54,63 @@ def analyze_stock(request: AnalyzeRequest):
     result = graph.invoke(initial_state)
 
     metrics = get_stock_metrics(
-        request.ticker
+        ticker
     )
+    
+    company_info = get_company_info(
+        ticker
+    )
+
+    history = get_stock_history(
+        ticker
+    )
+
+    chart_data = {
+
+        "dates":
+            history.index.strftime(
+                "%Y-%m-%d"
+            ).tolist(),
+
+        "prices":
+            history["Close"].round(
+                2
+            ).tolist()
+    }
 
     return {
 
-    "ticker": result["ticker"],
+        "ticker":
+            ticker,
 
-    "metrics": metrics,
+        "metrics":
+            metrics,
+        
+        "company_info":
+            company_info,
 
-    "recommendation":
-        result["final_recommendation"],
+        "chart_data":
+            chart_data,
 
-    "research_report":
-        result["research_report"],
+        "recommendation":
+            result["final_recommendation"],
 
-    "financial_report":
-        result["financial_report"],
+        "research_report":
+            result["research_report"],
 
-    "news_report":
-        result["news_report"],
+        "financial_report":
+            result["financial_report"],
 
-    "bull_case":
-        result["bull_case"],
+        "news_report":
+            result["news_report"],
 
-    "bear_case":
-        result["bear_case"],
+        "bull_case":
+            result["bull_case"],
 
-    "risk_report":
-        result["risk_report"]
+        "bear_case":
+            result["bear_case"],
 
-}
+        "risk_report":
+            result["risk_report"]
+
+    }
