@@ -10,27 +10,29 @@ def news_agent(ticker):
     prompt = f"""
 You are a financial news analyst.
 
-Analyze the following news:
+Analyze:
 
 {news}
 
-Return ONLY the following format:
+Rules:
+- Maximum 80 words
+- Concise
 
-NEWS SENTIMENT:
+Return:
+
+SENTIMENT:
 Bullish / Neutral / Bearish
 
-POSITIVE CATALYSTS:
-- point 1
-- point 2
-- point 3
+POSITIVE:
+- point
+- point
 
-NEGATIVE CATALYSTS:
-- point 1
-- point 2
-- point 3
+NEGATIVE:
+- point
+- point
 
 OUTLOOK:
-2-3 sentence summary.
+1-2 sentences
 """
 
     return safe_generate(

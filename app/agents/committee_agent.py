@@ -16,21 +16,24 @@ Bear Case:
 Risk Assessment:
 {state["risk_report"]}
 
-Provide:
+Rules:
+- Maximum 100 words
+- Professional tone
+- No fluff
+
+Return EXACTLY:
 
 Recommendation: BUY/HOLD/SELL
 
 Confidence Score: XX%
 
-Summary:
-Maximum 3 sentences.
+Investment Thesis:
+2 sentences
 
-Why:
-- Point 1
-- Point 2
-- Point 3
-
-Keep total response under 150 words.
+Top Reasons:
+- point
+- point
+- point
 """
 
     state["final_recommendation"] = safe_generate(

@@ -104,14 +104,16 @@ if analyze_button:
         )
 
     # --------------------------------------------------
-    # Dashboard
+    # Market Snapshot
     # --------------------------------------------------
 
     st.divider()
 
-    st.subheader("📊 Investment Dashboard")
+    st.subheader("📊 Market Snapshot")
 
-    col1, col2, col3 = st.columns(3)
+    metrics = result.get("metrics", {})
+
+    col1, col2, col3, col4 = st.columns(4)
 
     with col1:
         st.metric(
@@ -121,21 +123,31 @@ if analyze_button:
 
     with col2:
         st.metric(
-            "Agents",
-            "7"
+            "Price",
+            metrics.get("price", "N/A")
         )
 
     with col3:
         st.metric(
-            "Status",
-            "Completed"
+            "Market Cap",
+            metrics.get("market_cap", "N/A")
         )
 
-    st.divider()
+    with col4:
+        st.metric(
+            "P/E Ratio",
+            metrics.get("pe_ratio", "N/A")
+        )
+
+    st.caption(
+        f"Sector: {metrics.get('sector', 'Unknown')}"
+    )
 
     # --------------------------------------------------
-    # Recommendation Card
+    # Committee Decision
     # --------------------------------------------------
+
+    st.divider()
 
     recommendation_text = result.get(
         "recommendation",
@@ -163,43 +175,71 @@ if analyze_button:
             st.warning("HOLD")
 
     with right:
-        st.info(recommendation_text)
+
+        st.markdown(
+            f"""
+### Committee Analysis
+
+{recommendation_text}
+"""
+        )
 
     # --------------------------------------------------
-    # Agent Reports
+    # Risk Metrics
     # --------------------------------------------------
 
-    if "research_report" in result:
+    risk_text = result.get(
+        "risk_report",
+        ""
+    )
 
-        with st.expander(
-            "🧠 Research Report"
-        ):
-            st.write(
-                result["research_report"]
+    risk_score = "N/A"
+
+    if "Risk Score:" in risk_text:
+
+        try:
+
+            risk_score = (
+                risk_text
+                .split("Risk Score:")[1]
+                .split("\n")[0]
+                .strip()
             )
 
-    if "financial_report" in result:
+        except:
+            pass
 
-        with st.expander(
-            "📊 Financial Report"
-        ):
-            st.write(
-                result["financial_report"]
-            )
+    st.divider()
 
-    if "news_report" in result:
+    col1, col2 = st.columns(2)
 
-        with st.expander(
-            "📰 News Report"
-        ):
-            st.write(
-                result["news_report"]
-            )
+    with col1:
+
+        st.metric(
+            "Risk Score",
+            risk_score
+        )
+
+    with col2:
+
+        st.metric(
+            "Agents Used",
+            "7"
+        )
+
+    # --------------------------------------------------
+    # Investment Thesis
+    # --------------------------------------------------
+
+    st.divider()
+
+    st.subheader("📈 Investment Thesis")
 
     if "bull_case" in result:
 
         with st.expander(
-            "🐂 Bull Case"
+            "🐂 Bull Case",
+            expanded=True
         ):
             st.write(
                 result["bull_case"]
@@ -221,6 +261,41 @@ if analyze_button:
         ):
             st.write(
                 result["risk_report"]
+            )
+
+    # --------------------------------------------------
+    # Supporting Analysis
+    # --------------------------------------------------
+
+    st.divider()
+
+    st.subheader("📚 Supporting Analysis")
+
+    if "financial_report" in result:
+
+        with st.expander(
+            "📊 Financial Report"
+        ):
+            st.write(
+                result["financial_report"]
+            )
+
+    if "news_report" in result:
+
+        with st.expander(
+            "📰 News Report"
+        ):
+            st.write(
+                result["news_report"]
+            )
+
+    if "research_report" in result:
+
+        with st.expander(
+            "🧠 Full Research Report"
+        ):
+            st.write(
+                result["research_report"]
             )
 
     # --------------------------------------------------

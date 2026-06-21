@@ -7,25 +7,22 @@ def bear_agent(state):
     prompt = f"""
 You are a bearish equity analyst.
 
-Based on:
-
-Research Report:
+Research:
 {state["research_report"]}
 
-Financial Report:
+Financial:
 {state["financial_report"]}
 
-News Report:
+News:
 {state["news_report"]}
 
-Create the strongest bear case.
-
 Rules:
-- Maximum 5 bullet points
-- Each bullet under 20 words
+- Maximum 5 bullets
+- Each bullet under 15 words
 - No introduction
 - No conclusion
-- Be concise
+
+Return only bullets.
 """
 
     state["bear_case"] = safe_generate(
